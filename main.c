@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 15:44:42 by paoroste          #+#    #+#             */
-/*   Updated: 2017/06/01 16:00:54 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/06/08 13:22:25 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,14 @@ void		get_arg(t_opt *arg, char *str)
 	i = 0;
 	while (str[++i])
 	{
-		if (one_of(str[i], "1lRart") || (str[1] == '-' && !str[2]))
+		if (one_of(str[i], "1lRartf") || (str[1] == '-' && !str[2]))
 		{
 			arg->l = (str[i] == 'l' ? 1 : arg->l);
 			arg->up_r = (str[i] == 'R' ? 1 : arg->up_r);
 			arg->a = (str[i] == 'a' ? 1 : arg->a);
 			arg->r = (str[i] == 'r' ? 1 : arg->r);
 			arg->t = (str[i] == 't' ? 1 : arg->t);
+			arg->f = (str[i] == 'f' ? 1 : arg->f);
 		}
 		else
 			error_arg(str[i]);
@@ -62,12 +63,12 @@ int		main(int argc, char **argv)
 	t_list		*path;
 	t_opt		arg;
 
-	arg = (t_opt){0, 0, 0, 0, 0};
+	arg = (t_opt){0, 0, 0, 0, 0, 0};
 	path = NULL;
 	if (argc > 1)
-		get_param(argc - 1, argv, &arg, &path);
+		get_param(argc -1, argv, &arg, &path);
 	if (path == NULL)
-		path = ft_lstnew(".", ft_strlen("."));
+		path = ft_lstnew("./", ft_strlen("./"));
 	core(arg, path, path->next != NULL ? 1 : 0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/31 15:45:12 by paoroste          #+#    #+#             */
-/*   Updated: 2017/05/31 16:38:15 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/06/08 13:19:46 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	error_arg(char arg)
 
 void	error(char *str, char *error, int nb)
 {
-	ft_putstr_fd(str, 2);
+	//ft_putstr_fd(str, 2);
 	perror(error);
 	if (nb)
 		exit(EXIT_FAILURE);

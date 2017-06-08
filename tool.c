@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 15:38:11 by paoroste          #+#    #+#             */
-/*   Updated: 2017/05/31 12:18:18 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/06/07 15:29:23 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int			one_of(char c, char *str)
 {
 	int		i;
 
-	if((*str == NULL) || c == '\0')
+	if((str == NULL) || c == '\0')
 		return (0);
 	i = -1;
 	while (str[++i])
