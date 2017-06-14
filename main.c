@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 15:44:42 by paoroste          #+#    #+#             */
-/*   Updated: 2017/06/08 13:22:25 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/06/14 14:13:29 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int		main(int argc, char **argv)
 	if (argc > 1)
 		get_param(argc -1, argv, &arg, &path);
 	if (path == NULL)
-		path = ft_lstnew("./", ft_strlen("./"));
+		path = ft_lstnew(".", ft_strlen("."));
 	core(arg, path, path->next != NULL ? 1 : 0);
 	return (0);
 }

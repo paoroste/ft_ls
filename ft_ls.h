@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 16:38:50 by paoroste          #+#    #+#             */
-/*   Updated: 2017/06/07 15:53:34 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/06/14 15:33:10 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void			error_arg(char arg);
 void			error(char *str, char *error, int nb);
 void			core(t_opt arg, t_list *path, int reps);
 void			get_info(t_elem **files, char *name, char *path, t_opt arg);
+int				get_info2(t_elem **files, struct dirent file, char *path, t_opt arg);
 t_elem			*ft_ls_sort(t_elem **list, t_opt arg);
 void			ls_easy(t_opt arg, t_elem *file);
 

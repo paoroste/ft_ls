@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 15:44:31 by paoroste          #+#    #+#             */
-/*   Updated: 2017/06/08 18:27:09 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/06/14 14:33:55 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void		ls_easy(t_opt arg, t_elem *file)
 	chem = file;
 	while (chem)
 	{
-		//if (!(arg.a == 0 && chem->name[0] == '.'))
-		//{
+		if (!(arg.a == 0 && chem->name[0] == '.'))
+		{
 			ft_putendl(chem->name);
-		//}
+		}
 		chem = chem->next;
 	}
 }

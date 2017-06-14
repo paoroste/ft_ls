@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/01 13:18:47 by paoroste          #+#    #+#             */
-/*   Updated: 2017/06/08 13:59:19 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/06/14 15:51:10 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ t_elem		*info_src(char *name, char *path, t_opt arg)
 	src->gid = fstat.st_gid;
 	src->rdev = fstat.st_rdev;
 	src->size = fstat.st_size;
-	if (arg.f == 1)
-		return (0);
 	src->blocks = fstat.st_blocks;
 	src->nlink = fstat.st_nlink;
 	src->mode = fstat.st_mode;
@@ -41,7 +39,7 @@ t_elem		*info_src(char *name, char *path, t_opt arg)
 
 int		get_info2(t_elem **files, struct dirent *file, char *path, t_opt arg)
 {
-	t_elem 		*list;
+	t_elem		*list;
 
 	list = *files;
 	if (!list)

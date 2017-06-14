@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 17:57:30 by paoroste          #+#    #+#             */
-/*   Updated: 2017/06/08 18:22:27 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/06/14 14:21:07 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_elem		*ft_ls_sort(t_elem **list, t_opt arg)
 	to_sort = *list;
 	if (arg.f == 0)
 	{
-		sort(&to_sort, ls_cmp);
+		//sort(&to_sort, ls_cmp);
 		arg.r == 1 ? ls_tros(&to_sort) : NULL;
 	}
 	return (to_sort);
