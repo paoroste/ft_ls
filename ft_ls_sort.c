@@ -6,109 +6,73 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 17:57:30 by paoroste          #+#    #+#             */
-/*   Updated: 2017/06/14 14:21:07 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/07/05 20:16:10 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int        ls_cmp(t_elem *src1, t_elem *src2)
+void		ls_swap(t_elem *list, t_elem *tmp)
 {
-	return (ft_strcmp(src1->name, src2->name));
+	struct file		*tmp_file;
+	struct stat		tmp_fstat;
+	char			*str;
+	char			*tmp_link;
+
+	str = list->path;
+	tmp->link = list->link;
+	tmp->file = list ->file;
+	tmp->fstat = list->fstat;
+	list->link = tmp->link;
+	list->fstat = tmp->fstat;
+	list->file = tmp->file;
+	list->path = tmp->path;
+	tmp->link = tmp->link;
+	tmp->file = tmp->file;
+	tmp->fstat = tmp->fstat;
+	tmp->path = str;
 }
 
-void		ls_swap(t_elem *a, t_elem *b)
+t_elem			*sort_t(t_elem *list)
 {
-	t_elem	*tmp;
+	t_elem		*tmp;
+	t_elem		*tmp1;
 
-	tmp = a;
-	a = b;
-	b = tmp;
-}
-
-void		sort(t_elem **list, int (*do_cmp)(t_elem *src1, t_elem *src2))
-{
-	t_elem	*a;
-	t_elem	*b;
-
-	a = *list;
-	while (a)
+	tmp = list;
+	tmp1 = list;
+	while (tmp1)
 	{
-		b = a->next;
-		while (b)
+		while (tmp)
 		{
-//			if (do_cmp(a, b) > 0)
-//				ls_swap(a, b);
-			b = b->next;
+			if ((tmp1->fstat.st_mtime - tmp->fstat.st_mtime) < 0)
+				ls_swap(tmp1, tmp);
+			tmp = tmp->next;
 		}
-		a = a->next;
+		tmp1 = tmp1->next;
+		tmp = tmp1;
 	}
+	return (list);
 }
 
-void		ls_tros(t_elem **list)
+t_elem		*ft_ls_sort(t_elem *list, t_opt arg)
 {
-	t_elem	*x;
-	t_elem	*y;
-	t_elem	*z;
+	if (arg.t == 1)
+		return (sort_t(list));
+	t_elem		*tmp;
+	t_elem		*tmp1;
 
-	x = *list;
-	y = NULL;
-	while (x)
+	tmp = list;
+	tmp1 = list;
+	while (tmp1)
 	{
-		z = y;
-		y = x;
-		x = x->next;
-		y->next = z;
-	}
-	*list = y;
-}
-
-t_elem		*ft_ls_sort(t_elem **list, t_opt arg)
-{
-	t_elem		*to_sort;
-
-	if (!list)
-		return (NULL);
-	to_sort = *list;
-	if (arg.f == 0)
-	{
-		//sort(&to_sort, ls_cmp);
-		arg.r == 1 ? ls_tros(&to_sort) : NULL;
-	}
-	return (to_sort);
-}
-
-/*void	dont_know()
-{
-	DIR*				rep = NULL;
-	struct	dirent*		fichier = NULL;
-	t_elem				*file = NULL;
-	t_elem				**final = NULL;
-
-	rep = opendir("./");
-	if (rep == NULL)
-		perror("");
-	if (argc == 2 && (ft_memcmp(argv[1], "-a", 2) == 0))
-	{
-		while ((fichier = readdir(rep)) != NULL)
+		while (tmp)
 		{
-			file->name = fichier->d_name;
-			ft_add(final, file);
+			if (ft_strcmp(tmp1->file->d_name, tmp->file->d_name) > 0)
+				ls_swap(tmp1, tmp);
+			tmp = tmp->next;
 		}
+		tmp1 = tmp1->next;
+		tmp = tmp1;
 	}
-	else
-	{
-		while ((fichier = readdir(rep)) != NULL)
-		{
-			if (fichier->d_name[0] != '.')
-			{
-				tmp = file;
-				file->next = tmp;
-				file->name = (fichier->d_name);
-			}
-		}
-	}
-	if (closedir(rep) == -1)
-		exit(-1);
-	return (0);
-}*/
+	return (list);
+}

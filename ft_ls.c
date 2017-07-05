@@ -6,23 +6,38 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 15:44:31 by paoroste          #+#    #+#             */
-/*   Updated: 2017/06/14 14:33:55 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/07/05 20:15:44 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void		ls_easy(t_opt arg, t_elem *file)
+int			ls_easy(t_elem *list, t_opt arg)
 {
-	t_elem *chem;
+	if(list->i == 0)
+		return (0);
+	ft_print("%s, ", list->file->d_name);
+	return (0);
+}
 
-	chem = file;
-	while (chem)
+void		ft_ls(t_elem *list, t_opt arg, int i)
+{
+	if (arg.r == 1)
 	{
-		if (!(arg.a == 0 && chem->name[0] == '.'))
+		while (list->next)
+			list = list->next;
+		while(list)
 		{
-			ft_putendl(chem->name);
+			ls_easy(list, arg);
+			list = list->prev;
 		}
-		chem = chem->next;
+	}
+	else
+	{
+		while(list)
+		{
+			ls_easy(list, arg);
+			list = list->next;
+		}
 	}
 }

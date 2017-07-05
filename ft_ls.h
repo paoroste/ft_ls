@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 16:38:50 by paoroste          #+#    #+#             */
-/*   Updated: 2017/06/14 15:33:10 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/07/05 20:19:32 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,40 +27,48 @@
 # include <stdio.h>
 # include "./libft/srcs/libft.h"
 
-typedef struct	s_opt
+typedef struct		s_opt
 {
-	int		a;
-	int		l;
-	int		up_r;
-	int		r;
-	int		t;
-	int		f;
-}				t_opt;
+	int				up_r;
+	int				a;
+	int				l;
+	int				r;
+	int				t;
+	int				prpath;
+	int				zero;
+	long long		blocks;
+	char			*cblocks;
+	char			*err_name;
+}					t_opt;
 
-typedef struct	s_elem
+typedef struct		file
 {
+	char			*d_name;
+}					file;
 
-	char			*name;
+typedef struct		t_elem
+{
 	char			*path;
-	uid_t			uid;
-	gid_t			gid;
-	mode_t			mode;
-	dev_t			rdev;
-	time_t			date;
-	off_t			size;
-	quad_t			blocks;
-	nlink_t			nlink;
-	struct s_elem	*next;
+	char			*rights;
+	char			*size;
+	char			*nlink;
+	char			*link;
+	char			*date;
+	char			*gr_name;
+	char			*usr_name;
+	int				i;
+	struct file		*file;
+	struct stat		fstat;
+	struct t_elem	*next;
+	struct passwd	*usr;
+	struct group	*group;
+	struct t_elem	*prev;
+}					t_elem;
 
-}				t_elem;
-
-int				one_of(char c, char *str);
 void			error_arg(char arg);
-void			error(char *str, char *error, int nb);
-void			core(t_opt arg, t_list *path, int reps);
-void			get_info(t_elem **files, char *name, char *path, t_opt arg);
-int				get_info2(t_elem **files, struct dirent file, char *path, t_opt arg);
-t_elem			*ft_ls_sort(t_elem **list, t_opt arg);
-void			ls_easy(t_opt arg, t_elem *file);
+int				error(char *str, char *error, t_opt arg);
+t_elem			*get_info(t_elem *list, struct dirent *file, char *path, t_opt arg);
+t_elem			*ft_ls_sort(t_elem *list, t_opt arg);
+void			ft_ls(t_elem *list, t_opt arg, int i);
 
 #endif

@@ -6,14 +6,14 @@
 #    By: paoroste <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 16:53:04 by paoroste          #+#    #+#              #
-#    Updated: 2017/06/07 18:42:38 by paoroste         ###   ########.fr        #
+#    Updated: 2017/07/05 20:19:30 by paoroste         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ls
 FLAGS = -Wall -Wextra -Werror
 
-SRC = ft_ls_sort.c core.c tool.c main.c ft_error.c get_info.c ft_ls.c
+SRC = ft_ls_sort.c main.c ft_error.c get_info.c ft_ls.c\
 
 all: $(NAME)
 

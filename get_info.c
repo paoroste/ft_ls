@@ -6,66 +6,90 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/01 13:18:47 by paoroste          #+#    #+#             */
-/*   Updated: 2017/06/14 15:51:10 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/07/05 20:20:39 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_elem		*info_src(char *name, char *path, t_opt arg)
+t_elem		*info_src(t_elem *link)
 {
-	t_elem			*src;
-	struct stat 	fstat;
-
-	src = malloc(sizeof(src));
-	src->name = ft_strdup(name);
-	src->path = ft_strjoin(path, name);
-	if (lstat(src->name, &fstat) == -1)
-	{
-		error("ft_ls: ", src->name, 1);
-		return (NULL);
-	}
-	src->date = fstat.st_mtime;
-	src->uid = fstat.st_uid;
-	src->gid = fstat.st_gid;
-	src->rdev = fstat.st_rdev;
-	src->size = fstat.st_size;
-	src->blocks = fstat.st_blocks;
-	src->nlink = fstat.st_nlink;
-	src->mode = fstat.st_mode;
-	src->next = NULL;
-	return (src);
+	link = (t_elem*)malloc(sizeof(t_elem));
+	link->i = 93;
+	link->path = NULL;
+	link->rights = NULL;
+	link->size = NULL;
+	link->nlink = NULL;
+	link->link = NULL;
+	link->date = NULL;
+	link->file = NULL;
+	link->usr = NULL;
+	link->group = NULL;
+	link->gr_name = NULL;
+	link->usr_name = NULL;
+	return (link);
 }
 
-int		get_info2(t_elem **files, struct dirent *file, char *path, t_opt arg)
+t_elem		*do_prev(t_elem *list, t_elem *tmp)
 {
-	t_elem		*list;
+	t_elem	*elem;
 
-	list = *files;
-	if (!list)
-		return (0);
-	if (list)
-	{
-		while (list->next)
-			list = list->next;
-		list->next = info_src(file->d_name, path, arg);
-	}
-	else
-		*files = info_src(file->d_name, path, arg);
-	return (1);
+	elem = list;
+	while(elem->next != tmp)
+		elem = elem->next;
+	return (elem);
 }
 
-void		get_info(t_elem **files, char *name, char *path, t_opt arg)
+int			is_link(t_elem *tmp)
 {
-	t_elem		*list;
+	char	buf[256];
+	int		ret;
 
-	list = *files;
-	if (list)
+	if ((ret = readlink(tmp->path, buf, 256)) != -1)
 	{
-		while (list->next)
-			list = list->next;
-		list->next = info_src(name, path, arg);
+		buf[ret] = '\0';
+		tmp->link = ft_strdup(buf);
+		return (1);
 	}
 	else
-		*files = info_src(name, path, arg);
+		tmp->link = NULL;
+	return (0);
+}
+
+t_elem		*get_data(t_elem *elem, struct dirent *ent, char *path, t_opt arg)
+{
+	elem->next = NULL;
+	elem->file = (file*)malloc(sizeof(file));
+	elem->file->d_name = ft_strdup(ent->d_name);
+	elem->path = ft_freejoin(path, elem->file->d_name, 0);
+	if ((stat(elem->path, &elem->fstat)) == -1)
+		elem->i = error("ft_ls: ", elem->file->d_name, arg);
+	if (is_link(elem))
+		if ((stat(elem->path, &elem->fstat)) == -1)
+			elem->i = error("ft_ls: ", elem->file->d_name, arg);
+	return (elem);
+}
+
+t_elem		*get_info(t_elem *list, struct dirent *file, char *path, t_opt arg)
+{
+	t_elem		*tmp;
+
+	tmp = list;
+	if (list)
+	{
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = info_src(tmp);
+		tmp = tmp->next;
+		tmp = get_data(tmp, file, path, arg);
+		tmp->prev = do_prev(list, tmp);
+	}
+	else
+	{
+		list = info_src(list);
+		list = get_data(list, file, path, arg);
+		list->prev = NULL;
+		return (list);
+	}
+	return (list);
 }

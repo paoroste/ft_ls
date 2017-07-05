@@ -6,20 +6,25 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 15:44:42 by paoroste          #+#    #+#             */
-/*   Updated: 2017/06/14 14:13:29 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/07/05 20:19:12 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		whats_dat(char *str)
+int			one_of(char c, char *str)
 {
-	if (str && str[0] == '-' && str[1])
-		return (1);
+	int		i;
+
+	if((str == NULL) || c == '\0')
+		return (0);
+	while (str[++i])
+		if(str[i] == c)
+			return (1);
 	return (0);
 }
 
-void		get_arg(t_opt *arg, char *str)
+void		get_arg(t_opt arg, char *str)
 {
 	int i;
 
@@ -28,47 +33,56 @@ void		get_arg(t_opt *arg, char *str)
 	{
 		if (one_of(str[i], "1lRartf") || (str[1] == '-' && !str[2]))
 		{
-			arg->l = (str[i] == 'l' ? 1 : arg->l);
-			arg->up_r = (str[i] == 'R' ? 1 : arg->up_r);
-			arg->a = (str[i] == 'a' ? 1 : arg->a);
-			arg->r = (str[i] == 'r' ? 1 : arg->r);
-			arg->t = (str[i] == 't' ? 1 : arg->t);
-			arg->f = (str[i] == 'f' ? 1 : arg->f);
+			arg.up_r = (str[i] == 'R' ? 1 : arg.up_r);
+			arg.a = (str[i] == 'a' ? 1 : arg.a);
+			arg.l = (str[i] == 'l' ? 1 : arg.l);
+			arg.r = (str[i] == 'r' ? 1 : arg.r);
+			arg.t = (str[i] == 't' ? 1 : arg.t);
 		}
 		else
 			error_arg(str[i]);
 	}
 }
 
-void		get_param(int nb, char **param, t_opt *arg, t_list **path)
+int			core(char *path, t_opt arg)
 {
-	int		i;
-	int		what;
-	
-	i = -1;
-	what = 1;
-	while (++i < nb)
-	{
-		if (whats_dat(param[i + 1]) == 0)
-			what = 0;
-		if (what == 1)
-			get_arg(arg, param[i + 1]);
-		else if (what == 0)
-			ft_lstend(path, param[i + 1], ft_strlen(param[i + 1]));
-	}
+	DIR				*rep;
+	t_elem			*list;
+	struct dirent	*fichier;
+
+	list = NULL;
+	if (path[ft_strlen(path) - 1] != '/')
+		path = ft_strjoin(path, "/");
+	if ((rep = opendir(path)) == NULL)
+		return (error("ft_ls: ", path, arg));
+	while ((fichier = readdir(rep)) != NULL)
+		list = get_info(list, fichier, path, arg);
+	list = ft_ls_sort(list, arg);
+	ft_ls(list, arg, 0);
+	closedir(rep);
+	free(path);
+	return (0);
 }
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
-	t_list		*path;
+	int			a;
 	t_opt		arg;
 
-	arg = (t_opt){0, 0, 0, 0, 0, 0};
-	path = NULL;
-	if (argc > 1)
-		get_param(argc -1, argv, &arg, &path);
-	if (path == NULL)
-		path = ft_lstnew(".", ft_strlen("."));
-	core(arg, path, path->next != NULL ? 1 : 0);
+	a = 1;
+	arg = (t_opt){0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL};
+	while (a < argc && argv[a][0] == '-' && argv[a][1] != '\0')
+	{
+		get_arg(arg, argv[a]);
+		a++;
+	}
+	if (a == argc)
+		core(ft_strdup("./"), arg);
+	else
+		while (a < argc)
+		{
+			core(ft_strdup(argv[a]), arg);
+			a++;
+		}
 	return (0);
 }

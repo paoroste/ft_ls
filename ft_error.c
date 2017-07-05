@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/31 15:45:12 by paoroste          #+#    #+#             */
-/*   Updated: 2017/06/14 14:36:28 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/07/05 18:58:04 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,18 @@ void	error_arg(char arg)
 {
 	ft_putstr_fd("ft_ls: illegal option -- ", 2);
 	ft_putchar_fd(arg, 2);
-	ft_putstr_fd("usage: ft_ls [-Ralrt1] [file ...]\n", 2);
+	ft_putstr_fd("usage: ft_ls [-Ralrt] [file ...]\n", 2);
 	exit(EXIT_FAILURE);
 }
 
-void	error(char *str, char *error, int nb)
+int		error(char *str, char *error, t_opt arg)
 {
-	ft_putstr_fd(str, 2);
-	perror(error);
-	if (nb)
-		exit(EXIT_FAILURE);
+	if (arg.a == 1 || error[0] != '.')
+	{
+		ft_putstr_fd(str, 2);
+		perror(error);
+	}
+	return (0);
+	//if (nb)
+	//	exit(EXIT_FAILURE);
 }

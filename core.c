@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 17:57:30 by paoroste          #+#    #+#             */
-/*   Updated: 2017/06/14 15:51:00 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/07/05 19:15:45 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ void		whatI_do(t_opt arg, t_elem *files, int fichierorrep)
 	chem = files;
 	chem = ft_ls_sort(&chem, arg);
 	ls_easy(arg, chem);
-	if (fichierorrep == 1)
-		error("FT_LS:", "can't -> multidir(whatI_do)", 0);
 }
 
 void		ls_file(t_opt arg, t_list *fichier)
@@ -39,13 +37,7 @@ void		ls_file(t_opt arg, t_list *fichier)
 	if (files)
 		whatI_do(arg, files, 0);
 }
-
-void		ls_rep2(t_opt arg, t_list *rep, int reps)
-{
-
-}
-
-void		ls_rep(t_opt arg, t_list *rep, int reps)
+/*void		ls_rep(t_opt arg, t_list *rep, int reps)
 {
 	t_list	*chem;
 	t_elem	*dir;
@@ -57,9 +49,9 @@ void		ls_rep(t_opt arg, t_list *rep, int reps)
 		get_info2(&dir, chem->content, "", arg);
 		chem = chem->next;
 	}
-}
-	
-void		core(t_opt arg, t_list *path, int reps)
+}*/
+
+/*void		core(t_opt arg, t_list *path, int reps)
 {
 	DIR*			dir;
 	t_list			*rep;
@@ -84,7 +76,5 @@ void		core(t_opt arg, t_list *path, int reps)
 	}
 	fichier ? ls_file(arg, fichier) : NULL;
 	fichier && rep ? ft_putchar('\n') : NULL;
-	if (reps == 1)
-		error("FT_LS: ", "can't -> multidir(core)", 0);
-	rep ? ls_rep(arg, rep, reps) : NULL;
-}
+	//rep ? ls_rep(arg, rep, reps) : NULL;
+}*/
