@@ -1,33 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.c                                         :+:      :+:    :+:   */
+/*   erase.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/31 15:45:12 by paoroste          #+#    #+#             */
-/*   Updated: 2017/09/27 18:27:45 by paoroste         ###   ########.fr       */
+/*   Created: 2017/09/28 17:58:36 by paoroste          #+#    #+#             */
+/*   Updated: 2017/09/28 18:05:21 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	error_arg(char arg)
+void		nul(t_elem *link)
 {
-	ft_putstr_fd("ft_ls: illegal option -- ", 2);
-	ft_putchar_fd(arg, 2);
-	ft_putstr_fd("\nusage: ft_ls [-Ralrt] [file ...]\n", 2);
-	exit(EXIT_FAILURE);
+	link->path = NULL;
+	link->rights = NULL;
+	link->size = NULL;
+	link->nlink = NULL;
+	link->link = NULL;
+	link->date = NULL;
+	link->file = NULL;
+	link->usr = NULL;
+	link->group = NULL;
+	link->gr_name = NULL;
+	link->usr_name = NULL;
 }
 
-int		error(char *str, char *error, t_opt arg)
+void		erase(t_elem *list)
 {
-	if (arg.a == 1 || error[0] != '.')
+	while (list)
 	{
-		ft_putstr_fd(str, 2);
-		perror(error);
+		nul(list);
+		list = list->next;
 	}
-	return (0);
-	//if (nb)
-	//	exit(EXIT_FAILURE);
 }

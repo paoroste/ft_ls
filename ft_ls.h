@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 16:38:50 by paoroste          #+#    #+#             */
-/*   Updated: 2017/07/05 20:19:32 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/09/30 20:10:34 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct		file
 typedef struct		t_elem
 {
 	char			*path;
+	char			*d_name;
 	char			*rights;
 	char			*size;
 	char			*nlink;
@@ -65,10 +66,23 @@ typedef struct		t_elem
 	struct t_elem	*prev;
 }					t_elem;
 
+int				check_nl(int nl, int nl2, char c);
+t_opt			check_blocks(t_opt arg, long long blocks, char c);
+int				check_min(dev_t result);
+int				check_maj(dev_t result);
+int				check(int size);
+int				check_ma(t_elem *list);
+int				more_check(t_elem *tmp, int size);
+char			*more_rights(t_elem *list, char *str);
 void			error_arg(char arg);
+void			erase(t_elem *list);
 int				error(char *str, char *error, t_opt arg);
 t_elem			*get_info(t_elem *list, struct dirent *file, char *path, t_opt arg);
 t_elem			*ft_ls_sort(t_elem *list, t_opt arg);
+t_opt			get_more_info(t_elem *list, t_opt arg);
+void			get_time_mm(t_elem *list, t_opt arg, int size, int nlink);
+char			*itoa_long(long long nb);
+void			put_time(t_elem *list);
 void			ft_ls(t_elem *list, t_opt arg, int i);
 
 #endif

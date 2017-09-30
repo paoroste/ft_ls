@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/01 13:18:47 by paoroste          #+#    #+#             */
-/*   Updated: 2017/07/05 20:20:39 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/09/25 19:07:18 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,40 +56,37 @@ int			is_link(t_elem *tmp)
 	return (0);
 }
 
-t_elem		*get_data(t_elem *elem, struct dirent *ent, char *path, t_opt arg)
+t_elem		*get_data(t_elem *elem, struct dirent *fichier, char *path, t_opt arg)
 {
 	elem->next = NULL;
 	elem->file = (file*)malloc(sizeof(file));
-	elem->file->d_name = ft_strdup(ent->d_name);
+	elem->file->d_name = ft_strdup(fichier->d_name);
 	elem->path = ft_freejoin(path, elem->file->d_name, 0);
 	if ((stat(elem->path, &elem->fstat)) == -1)
 		elem->i = error("ft_ls: ", elem->file->d_name, arg);
 	if (is_link(elem))
-		if ((stat(elem->path, &elem->fstat)) == -1)
+		if ((lstat(elem->path, &elem->fstat)) == -1)
 			elem->i = error("ft_ls: ", elem->file->d_name, arg);
 	return (elem);
 }
 
-t_elem		*get_info(t_elem *list, struct dirent *file, char *path, t_opt arg)
+t_elem		*get_info(t_elem *list, struct dirent *fichier, char *path, t_opt arg)
 {
 	t_elem		*tmp;
 
 	tmp = list;
-	if (list)
-	{
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = info_src(tmp);
-		tmp = tmp->next;
-		tmp = get_data(tmp, file, path, arg);
-		tmp->prev = do_prev(list, tmp);
-	}
-	else
+	if (list == NULL)
 	{
 		list = info_src(list);
-		list = get_data(list, file, path, arg);
+		list = get_data(list, fichier, path, arg);
 		list->prev = NULL;
 		return (list);
 	}
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = info_src(tmp);
+	tmp = tmp->next;
+	tmp = get_data(tmp, fichier, path, arg);
+	tmp->prev = do_prev(list, tmp);
 	return (list);
 }

@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 17:57:30 by paoroste          #+#    #+#             */
-/*   Updated: 2017/07/05 20:16:10 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/09/27 18:27:42 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ void		ls_swap(t_elem *list, t_elem *tmp)
 	char			*tmp_link;
 
 	str = list->path;
-	tmp->link = list->link;
-	tmp->file = list ->file;
-	tmp->fstat = list->fstat;
+	tmp_link = list->link;
+	tmp_file = list->file;
+	tmp_fstat = list->fstat;
 	list->link = tmp->link;
 	list->fstat = tmp->fstat;
 	list->file = tmp->file;
 	list->path = tmp->path;
-	tmp->link = tmp->link;
-	tmp->file = tmp->file;
-	tmp->fstat = tmp->fstat;
+	tmp->link = tmp_link;
+	tmp->file = tmp_file;
+	tmp->fstat = tmp_fstat;
 	tmp->path = str;
 }
 
