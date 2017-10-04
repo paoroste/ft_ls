@@ -6,7 +6,7 @@
 #    By: paoroste <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 16:53:04 by paoroste          #+#    #+#              #
-#    Updated: 2017/09/28 18:33:53 by paoroste         ###   ########.fr        #
+#    Updated: 2017/10/03 15:23:48 by paoroste         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ LIB = $(LIB_PATH)/libft.a
 FLAGS = -Wall -Wextra -Werror
 
 SRC = ft_ls_sort.c main.c ft_error.c get_info.c ft_ls.c\
-	  erase.c get_time.c get_more_info.c put_time.c
+	  erase.c get_time.c get_more_info.c put_time.c check.c\
+	  up_r.c sort_ascii.c
 
 all: $(NAME)
 

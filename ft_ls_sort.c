@@ -6,15 +6,15 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 17:57:30 by paoroste          #+#    #+#             */
-/*   Updated: 2017/09/27 18:27:42 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/10/03 16:01:13 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void		ls_swap(t_elem *list, t_elem *tmp)
+void			ls_swap(t_elem *list, t_elem *tmp)
 {
-	struct file		*tmp_file;
+	struct s_file	*tmp_file;
 	struct stat		tmp_fstat;
 	char			*str;
 	char			*tmp_link;
@@ -54,15 +54,15 @@ t_elem			*sort_t(t_elem *list)
 	return (list);
 }
 
-t_elem		*ft_ls_sort(t_elem *list, t_opt arg)
+t_elem			*ft_ls_sort(t_elem *list, t_opt arg)
 {
-	if (arg.t == 1)
-		return (sort_t(list));
 	t_elem		*tmp;
 	t_elem		*tmp1;
 
 	tmp = list;
 	tmp1 = list;
+	if (arg.t == 1)
+		return (sort_t(list));
 	while (tmp1)
 	{
 		while (tmp)

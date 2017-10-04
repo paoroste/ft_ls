@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/30 15:54:19 by paoroste          #+#    #+#             */
-/*   Updated: 2017/09/30 16:06:46 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/10/02 20:54:00 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int		check_min(dev_t result)
 	int		i;
 
 	i = result;
-	while ((i / 256) >0)
+	while ((i / 256) > 0)
 		i = i / 256;
 	return (i);
 }

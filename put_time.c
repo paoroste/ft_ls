@@ -6,18 +6,11 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/28 13:01:06 by paoroste          #+#    #+#             */
-/*   Updated: 2017/09/30 19:03:08 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/10/03 13:43:04 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-int			check_nl(int nl, int nl2, char c)
-{
-	if (nl < nl2 && c == '.')
-		return (nl2);
-	return (nl);
-}
 
 char		*more_rights(t_elem *list, char *str)
 {
@@ -45,7 +38,7 @@ char		*put_date(char *str)
 	final[0] = str[8];
 	final[1] = str[9];
 	final[2] = ' ';
-	final[3] = str[4];
+	final[3] = str[4] + 32;
 	final[4] = str[5];
 	final[5] = str[6];
 	final[6] = ' ';
@@ -66,7 +59,7 @@ char		*date_year(char *str)
 	final[0] = str[8];
 	final[1] = str[9];
 	final[2] = ' ';
-	final[3] = str[4];
+	final[3] = str[4] + 32;
 	final[4] = str[5];
 	final[5] = str[6];
 	final[6] = ' ';
@@ -86,14 +79,14 @@ void		put_time(t_elem *list)
 	time_t		now;
 
 	tmp = list;
-	while(tmp)
+	while (tmp)
 	{
 		if (tmp->i != 0)
 		{
 			str = ft_strdup(ctime(&tmp->fstat.st_mtime));
 			now = time(NULL);
 			str2 = ft_strdup(ctime(&now));
-			if (ft_strcmp(&str[20], &str[20]) != 0)
+			if (check_date(now, tmp->fstat.st_mtime))
 				tmp->date = date_year(str);
 			else
 				tmp->date = put_date(str);

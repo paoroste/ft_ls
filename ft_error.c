@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/31 15:45:12 by paoroste          #+#    #+#             */
-/*   Updated: 2017/09/27 18:27:45 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/10/04 13:20:01 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,18 @@ void	error_arg(char arg)
 	exit(EXIT_FAILURE);
 }
 
+void	error_unknow(int ac, char **av, t_opt arg, int a)
+{
+	DIR		*rep;
+
+	while (a < ac)
+	{
+		if ((rep = opendir(av[a])) == NULL)
+			errno == ENOENT ? error("ft_ls: ", av[a], arg) : 0;
+		a++;
+	}
+}
+
 int		error(char *str, char *error, t_opt arg)
 {
 	if (arg.a == 1 || error[0] != '.')
@@ -28,6 +40,4 @@ int		error(char *str, char *error, t_opt arg)
 		perror(error);
 	}
 	return (0);
-	//if (nb)
-	//	exit(EXIT_FAILURE);
 }

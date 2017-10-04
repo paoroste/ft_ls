@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 19:34:22 by paoroste          #+#    #+#             */
-/*   Updated: 2017/09/30 20:10:29 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/10/03 12:50:48 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char		*put_rights(t_elem *tmp, char *str)
 		str2[7] = 'w';
 	if (tmp->fstat.st_mode & S_IXOTH)
 		str2[8] = 'x';
-	return (ft_strjoin(str, str2));
+	return (ft_freejoin(str, str2, 3));
 }
 
 char		*get_rights(t_elem *tmp)
@@ -54,7 +54,7 @@ char		*get_rights(t_elem *tmp)
 		return (ft_strdup("p"));
 	if (S_ISSOCK(tmp->fstat.st_mode))
 		return (ft_strdup("s"));
-	return ft_strdup("-");
+	return (ft_strdup("-"));
 }
 
 char		*good_aligned(char *name, int tmp)
@@ -80,14 +80,10 @@ char		*good_aligned(char *name, int tmp)
 	return (final);
 }
 
-void		bad_aligned(t_elem *list)
+void		bad_aligned(t_elem *list, int usr, int grp)
 {
-	int			grp;
-	int			usr;
 	t_elem		*tmp;
 
-	grp = 0;
-	usr = 0;
 	tmp = list;
 	while (tmp)
 	{
@@ -111,22 +107,23 @@ void		bad_aligned(t_elem *list)
 	}
 }
 
-t_opt		get_more_info(t_elem *list, t_opt arg)
+t_opt		get_more_info(t_elem *tmp, t_elem *list, t_opt arg)
 {
-	t_elem		*tmp;
-
-	tmp = list;
-	while(tmp)
+	while (tmp)
 	{
 		if (tmp->i != 0)
 		{
-			tmp->usr = getpwuid(tmp->fstat.st_uid);
-			tmp->usr_name = ft_strdup(tmp->usr->pw_name);
-			tmp->group = getgrgid(tmp->fstat.st_gid);
-			tmp->gr_name = ft_strdup(tmp->group->gr_name);
+			if ((tmp->usr = getpwuid(tmp->fstat.st_uid)) == NULL)
+				tmp->usr_name = ft_itoa(tmp->fstat.st_uid);
+			else
+				tmp->usr_name = ft_strdup(tmp->usr->pw_name);
+			if ((tmp->group = getgrgid(tmp->fstat.st_gid)) == NULL)
+				tmp->gr_name = ft_itoa(tmp->fstat.st_uid);
+			else
+				tmp->gr_name = ft_strdup(tmp->group->gr_name);
 			tmp->rights = get_rights(tmp);
 			tmp->rights = put_rights(tmp, tmp->rights);
-			tmp
+			tmp->rights = more_rights(tmp, tmp->rights);
 			arg.blocks = arg.blocks + tmp->fstat.st_blocks;
 		}
 		tmp = tmp->next;
@@ -134,6 +131,6 @@ t_opt		get_more_info(t_elem *list, t_opt arg)
 	arg.cblocks = itoa_long(arg.blocks);
 	get_time_mm(list, arg, 0, 0);
 	put_time(list);
-	bad_aligned(list);
+	bad_aligned(list, 0, 0);
 	return (arg);
 }

@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 16:38:50 by paoroste          #+#    #+#             */
-/*   Updated: 2017/09/30 20:10:34 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/10/04 14:17:03 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,18 @@ typedef struct		s_opt
 	int				zero;
 	long long		blocks;
 	char			*cblocks;
-	char			*err_name;
+	char			*path;
+	int				aff;
+	int				c;
+	int				s;
 }					t_opt;
 
-typedef struct		file
+typedef struct		s_file
 {
 	char			*d_name;
-}					file;
+}					t_file;
 
-typedef struct		t_elem
+typedef struct		s_elem
 {
 	char			*path;
 	char			*d_name;
@@ -58,31 +61,38 @@ typedef struct		t_elem
 	char			*gr_name;
 	char			*usr_name;
 	int				i;
-	struct file		*file;
+	struct s_file	*file;
 	struct stat		fstat;
-	struct t_elem	*next;
+	struct s_elem	*next;
 	struct passwd	*usr;
 	struct group	*group;
-	struct t_elem	*prev;
+	struct s_elem	*prev;
 }					t_elem;
 
-int				check_nl(int nl, int nl2, char c);
-t_opt			check_blocks(t_opt arg, long long blocks, char c);
-int				check_min(dev_t result);
-int				check_maj(dev_t result);
-int				check(int size);
-int				check_ma(t_elem *list);
-int				more_check(t_elem *tmp, int size);
-char			*more_rights(t_elem *list, char *str);
-void			error_arg(char arg);
-void			erase(t_elem *list);
-int				error(char *str, char *error, t_opt arg);
-t_elem			*get_info(t_elem *list, struct dirent *file, char *path, t_opt arg);
-t_elem			*ft_ls_sort(t_elem *list, t_opt arg);
-t_opt			get_more_info(t_elem *list, t_opt arg);
-void			get_time_mm(t_elem *list, t_opt arg, int size, int nlink);
-char			*itoa_long(long long nb);
-void			put_time(t_elem *list);
-void			ft_ls(t_elem *list, t_opt arg, int i);
+void				error_unknow(int ac, char **av, t_opt arg, int a);
+void				not_dir(int ac, char **av, t_opt arg, int a);
+char				**arg_ascii(int ac, char **av, t_opt arg, int a);
+int					check_uni(char *str);
+int					check_date(time_t now, time_t mtime);
+void				up_r(t_elem *list, t_opt arg);
+int					check_nl(int nl, int nl2, char c);
+int					check_min(dev_t result);
+int					check_maj(dev_t result);
+int					check(int size);
+int					check_ma(t_elem *list);
+int					more_check(t_elem *tmp, int size);
+char				*more_rights(t_elem *list, char *str);
+void				error_arg(char arg);
+void				erase(t_elem *list);
+int					error(char *str, char *error, t_opt arg);
+t_elem				*get_info(t_elem *list, struct dirent *fichier,
+		char *path, t_opt arg);
+t_elem				*ft_ls_sort(t_elem *list, t_opt arg);
+t_opt				get_more_info(t_elem *tmp, t_elem *list, t_opt arg);
+void				get_time_mm(t_elem *list, t_opt arg, int size, int nlink);
+char				*itoa_long(long long nb);
+void				put_time(t_elem *list);
+void				ft_ls(t_elem *list, t_opt arg, int i);
+int					core(char *path, t_opt arg);
 
 #endif

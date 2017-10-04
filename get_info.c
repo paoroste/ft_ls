@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/01 13:18:47 by paoroste          #+#    #+#             */
-/*   Updated: 2017/09/25 19:07:18 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/10/04 15:16:51 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_elem		*do_prev(t_elem *list, t_elem *tmp)
 	t_elem	*elem;
 
 	elem = list;
-	while(elem->next != tmp)
+	while (elem->next != tmp)
 		elem = elem->next;
 	return (elem);
 }
@@ -56,21 +56,28 @@ int			is_link(t_elem *tmp)
 	return (0);
 }
 
-t_elem		*get_data(t_elem *elem, struct dirent *fichier, char *path, t_opt arg)
+t_elem		*get_data(t_elem *elem, struct dirent *fich, char *path, t_opt arg)
 {
 	elem->next = NULL;
-	elem->file = (file*)malloc(sizeof(file));
-	elem->file->d_name = ft_strdup(fichier->d_name);
+	elem->file = malloc(sizeof(elem->file));
+	elem->file->d_name = ft_strdup(fich->d_name);
 	elem->path = ft_freejoin(path, elem->file->d_name, 0);
 	if ((stat(elem->path, &elem->fstat)) == -1)
 		elem->i = error("ft_ls: ", elem->file->d_name, arg);
 	if (is_link(elem))
+	{
 		if ((lstat(elem->path, &elem->fstat)) == -1)
 			elem->i = error("ft_ls: ", elem->file->d_name, arg);
+		if (arg.l == 1)
+		{
+			elem->file->d_name = ft_freejoin(elem->file->d_name, " -> ", 1);
+			elem->file->d_name = ft_freejoin(elem->file->d_name, elem->link, 1);
+		}
+	}
 	return (elem);
 }
 
-t_elem		*get_info(t_elem *list, struct dirent *fichier, char *path, t_opt arg)
+t_elem		*get_info(t_elem *list, struct dirent *fich, char *path, t_opt arg)
 {
 	t_elem		*tmp;
 
@@ -78,7 +85,7 @@ t_elem		*get_info(t_elem *list, struct dirent *fichier, char *path, t_opt arg)
 	if (list == NULL)
 	{
 		list = info_src(list);
-		list = get_data(list, fichier, path, arg);
+		list = get_data(list, fich, path, arg);
 		list->prev = NULL;
 		return (list);
 	}
@@ -86,7 +93,7 @@ t_elem		*get_info(t_elem *list, struct dirent *fichier, char *path, t_opt arg)
 		tmp = tmp->next;
 	tmp->next = info_src(tmp);
 	tmp = tmp->next;
-	tmp = get_data(tmp, fichier, path, arg);
+	tmp = get_data(tmp, fich, path, arg);
 	tmp->prev = do_prev(list, tmp);
 	return (list);
 }

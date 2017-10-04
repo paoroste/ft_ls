@@ -6,7 +6,7 @@
 /*   By: paoroste <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/28 12:31:53 by paoroste          #+#    #+#             */
-/*   Updated: 2017/09/30 18:56:29 by paoroste         ###   ########.fr       */
+/*   Updated: 2017/10/03 16:03:13 by paoroste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char		*itoa_long(long long nb)
 
 	i = 0;
 	tmp = nb;
-	while(nb >= 10)
+	while (nb >= 10)
 	{
 		nb = nb / 10;
 		i++;
@@ -29,7 +29,7 @@ char		*itoa_long(long long nb)
 		return (0);
 	str[i + 1] = '\0';
 	nb = tmp;
-	while(i >= 0)
+	while (i >= 0)
 	{
 		str[i] = (nb % 10) + '0';
 		nb = nb / 10;
@@ -49,13 +49,13 @@ char		*conversion(long long size, int i)
 	if (str == NULL)
 		return (0);
 	str[i + 1] = '\0';
-	while(i >= 0)
+	while (i >= 0)
 	{
 		str[i] = (size % 10) + '0';
 		size = size / 10;
 		i--;
 	}
-	while(str[s] == '0' && str[s + 1] != '\0')
+	while (str[s] == '0' && str[s + 1] != '\0')
 	{
 		str[s] = ' ';
 		s++;
@@ -69,7 +69,7 @@ char		*conversion2(int mineur, char *size, int ma)
 
 	i = ft_strlen(size);
 	i = i - (ma + 4);
-	size[i + 1] = ' ';
+	size[i + 1] = ',';
 	if (mineur == 0)
 		size[i] = '0';
 	else
@@ -100,7 +100,8 @@ void		get_time_mm2(t_elem *list, int size, int nl)
 		{
 			tmp->nlink = conversion(tmp->fstat.st_nlink, nl);
 			tmp->size = conversion(check_maj(tmp->fstat.st_rdev), (size - 1));
-			tmp->size = conversion2(check_min(tmp->fstat.st_rdev), tmp->size, check(ma));
+			tmp->size = conversion2(check_min(tmp->fstat.st_rdev),
+					tmp->size, check(ma));
 		}
 		tmp = tmp->next;
 	}
@@ -111,7 +112,7 @@ void		get_time_mm(t_elem *list, t_opt arg, int size, int nl)
 	t_elem		*tmp;
 
 	tmp = list;
-	while(tmp)
+	while (tmp)
 	{
 		if (tmp->i && (tmp->rights[0] == 'c' || tmp->rights[0] == 'b'))
 			size = more_check(list, size);
@@ -126,7 +127,8 @@ void		get_time_mm(t_elem *list, t_opt arg, int size, int nl)
 		{
 			if (check(tmp->fstat.st_size) > size && tmp->file->d_name[0] != '.')
 				size = check(tmp->fstat.st_size);
-			nl = check_nl((check(tmp->fstat.st_nlink)), nl, tmp->file->d_name[0] != '.')
+			nl = check_nl((check(tmp->fstat.st_nlink)), nl,
+					tmp->file->d_name[0] != '.');
 		}
 		tmp = tmp->next;
 	}
